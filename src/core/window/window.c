@@ -30,7 +30,8 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, uin
 }
 
 void            free_h2ot3_window(h2ot3_window_t* window){
-    // TODO: Recursive freeing
+    // TODO: Recursive freeing of childrens
+    free(window->title);
     free(window);
 }
 
@@ -51,5 +52,6 @@ char*           _internal_deep_copy(char* string){
     );
     RETURN_IF_NULL(string_copy);
     memcpy(string_copy, string, size_string);
+    string_copy[size_string] = '\0';
     return string_copy;
 }

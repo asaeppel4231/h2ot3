@@ -16,7 +16,7 @@ void h2ot3_backend_draw_window(h2ot3_window_t *win) {
 #include <stdlib.h>
 #include <unistd.h>
 
-void test_xcb_window(int width, int height, int edge_radius) {
+void test_xcb_window(int width, int height, int edge_radius, char* title) {
     xcb_connection_t *conn = xcb_connect(NULL, NULL);
     if (xcb_connection_has_error(conn)) {
         printf("XCB: Connection error\n");
@@ -49,6 +49,17 @@ void test_xcb_window(int width, int height, int edge_radius) {
         values
     );
 
+    xcb_change_property( 
+        conn, 
+        XCB_PROP_MODE_REPLACE, 
+        win, 
+        XCB_ATOM_WM_NAME, 
+        XCB_ATOM_STRING, 
+        8, 
+        strlen(title), 
+        title 
+    );
+    
     xcb_map_window(conn, win);
     xcb_flush(conn);
 
@@ -76,11 +87,11 @@ void test_xcb_window(int width, int height, int edge_radius) {
 }
 
 int main(){
-    h2ot3_window_t* window = new_h2ot3_window("Test Window", 180, 240, 5, 0);
+    h2ot3_window_t* window = new_h2ot3_window("Test Windowhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", 180, 240, 5, 0);
     if(window == NULL){
         return -1;
     }
     h2ot3_backend_draw_window(window);
-    test_xcb_window(window->width_px, window->height_px, window->edge_radius_px);
+    test_xcb_window(window->width_px, window->height_px, window->edge_radius_px, window->title);
     free_h2ot3_window(window);    
 }
