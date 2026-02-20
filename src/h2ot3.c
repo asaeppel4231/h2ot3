@@ -2,12 +2,13 @@
 
 // only for first tests; similar parts are the backends doing in the future.
 #include <xcb/xcb.h>
-#include "core/window/window.c"
+#include "core/window/window.h"
 #include <stdio.h>
+#include <string.h>
 
 // Test 1: Dummy Test
 void h2ot3_backend_draw_window(h2ot3_window_t *win) {
-    printf("Drawing window %ux%u with edge radius: %u and title: %s\n", win->width_px, win->height_px, win->edge_radius_px, win->title);
+    printf("Drawing window %ux%u with title: %s\n", win->width_px, win->height_px, win->title);
 }
 
 // Test 2: Real XCB Window opening
@@ -16,7 +17,7 @@ void h2ot3_backend_draw_window(h2ot3_window_t *win) {
 #include <stdlib.h>
 #include <unistd.h>
 
-void test_xcb_window(int width, int height, int edge_radius, char* title) {
+void test_xcb_window(int width, int height, char* title) {
     xcb_connection_t *conn = xcb_connect(NULL, NULL);
     if (xcb_connection_has_error(conn)) {
         printf("XCB: Connection error\n");
@@ -42,7 +43,7 @@ void test_xcb_window(int width, int height, int edge_radius, char* title) {
         screen->root,
         0, 0,
         width, height,
-        edge_radius,
+        0,
         XCB_WINDOW_CLASS_INPUT_OUTPUT,
         screen->root_visual,
         mask,
@@ -87,11 +88,11 @@ void test_xcb_window(int width, int height, int edge_radius, char* title) {
 }
 
 int main(){
-    h2ot3_window_t* window = new_h2ot3_window("Test Windowhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", 180, 240, 5, 0);
+    h2ot3_window_t* window = new_h2ot3_window("Test Window", 180, 240, 0);
     if(window == NULL){
         return -1;
     }
     h2ot3_backend_draw_window(window);
-    test_xcb_window(window->width_px, window->height_px, window->edge_radius_px, window->title);
+    test_xcb_window(window->width_px, window->height_px, window->title);
     free_h2ot3_window(window);    
 }
