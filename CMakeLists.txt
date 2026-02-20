@@ -29,4 +29,4 @@ add_executable(h2ot3_demo
     src/h2ot3.c
 )
 
-target_link_libraries(h2ot3_demo h2ot3)
+target_link_libraries(h2ot3_demo h2ot3 xcb)
