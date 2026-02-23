@@ -7,6 +7,10 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/window
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/_internal
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/helpers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/mbool
 )
 
 set(H2OT3_ENGINE_SOURCES

@@ -12,15 +12,15 @@ typedef unsigned char mbool;
 #define MTRUE 1
 #define MFALSE 0
 
-int mbool_is_false(mbool boolean){
+static inline int mbool_is_false(mbool boolean){
     return boolean == MFALSE;
 }
 
-int mbool_is_true(mbool boolean){
+static inline int mbool_is_true(mbool boolean){
     return boolean == MTRUE;
 }
 
-int set_mbool_false(mbool* boolean){
+static inline int set_mbool_false(mbool* boolean){
     if(boolean == NULL){
         return MFALSE;
     }
@@ -28,7 +28,7 @@ int set_mbool_false(mbool* boolean){
     return MTRUE; 
 }
 
-int set_mbool_true(mbool* boolean){
+static inline int set_mbool_true(mbool* boolean){
     if(boolean == NULL){
         return MFALSE;
     }

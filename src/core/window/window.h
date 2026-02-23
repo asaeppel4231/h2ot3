@@ -2,6 +2,9 @@
 #define WINDOW_H
 
 #include "types.h"
+#include "mbool.h"
+
+#define WINDOW_DEBUG MTRUE
 
 typedef struct h2ot3_window h2ot3_window_t;
 

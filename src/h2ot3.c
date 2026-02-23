@@ -2,7 +2,7 @@
 
 // only for first tests; similar parts are the backends doing in the future.
 #include <xcb/xcb.h>
-#include "core/window/window.h"
+#include "window.h"
 #include <stdio.h>
 #include <string.h>
 
