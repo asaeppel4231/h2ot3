@@ -47,7 +47,36 @@ uint            get_h2ot3_window_heigh_px(h2ot3_window_t* window){
     return window->height_px;
 }
 
+uint            set_h2ot3_window_title    (h2ot3_window_t* window, char* title){
+    if(window == NULL){
+        return -1; // FIXME: Use another value
+    }
+    window->title = title;
+}
 
-//TODO: Implement Setter instead of having the definition in the header file
+uint            set_h2ot3_window_width_px (h2ot3_window_t* window, uint width_px){
+    if(window == NULL){
+        return -1;
+    }
+    window->width_px = width_px;
+}
+
+uint            set_h2ot3_window_height_px(h2ot3_window_t* window, uint height_px){
+    if(window == NULL){
+        return -1;
+    }
+    window->height_px = height_px;
+}
+
+uint            h2ot3_window_swap_dimensions(h2ot3_window_t* window){
+    if(window == NULL){
+        return -1;
+    }
+    uint _tmp;
+    _tmp = window->height_px;
+    window->height_px = window->width_px;
+    window->width_px = _tmp;
+}
+
 //TODO: Add backends
 // TODO: Do internal stuff in internal functions instead of in the public API
