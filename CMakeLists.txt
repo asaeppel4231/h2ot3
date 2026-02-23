@@ -16,6 +16,7 @@ include_directories(
 set(H2OT3_ENGINE_SOURCES
     src/core/window/window.c
     src/core/_internal/_internal.c
+    src/core/window/_internal_window.c
 )
 
 # Demo separat
