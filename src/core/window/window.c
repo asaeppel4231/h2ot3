@@ -44,7 +44,7 @@ uint            get_h2ot3_window_width_px(h2ot3_window_t* window){
     return window->width_px;
 }
 
-uint            get_h2ot3_window_heigh_px(h2ot3_window_t* window){
+uint            get_h2ot3_window_height_px(h2ot3_window_t* window){
     RETURN_IF_NULL(window, H2OT3_INVALID);
     return window->height_px;
 }
