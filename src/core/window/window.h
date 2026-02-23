@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-typedef unsigned int uint;
+#include "types.h"
 
 typedef struct h2ot3_window h2ot3_window_t;
 
@@ -17,7 +17,5 @@ uint            get_h2ot3_window_height_px(h2ot3_window_t* window);
 uint            set_h2ot3_window_title    (h2ot3_window_t* window, char* title);
 uint            set_h2ot3_window_width_px (h2ot3_window_t* window, uint width_px);
 uint            set_h2ot3_window_height_px(h2ot3_window_t* window, uint height_px);
-
-uint            h2ot3_window_swap_dimensions(h2ot3_window_t* window);
 
 #endif

@@ -4,8 +4,7 @@
 
 #include "helpers/helpers.h"
 #include "_internal/_internal.h"
-
-typedef unsigned int uint;
+#include "types.h"
 
 struct h2ot3_window {
     char* title;
@@ -66,16 +65,6 @@ uint            set_h2ot3_window_height_px(h2ot3_window_t* window, uint height_p
         return -1;
     }
     window->height_px = height_px;
-}
-
-uint            h2ot3_window_swap_dimensions(h2ot3_window_t* window){
-    if(window == NULL){
-        return -1;
-    }
-    uint _tmp;
-    _tmp = window->height_px;
-    window->height_px = window->width_px;
-    window->width_px = _tmp;
 }
 
 //TODO: Add backends
