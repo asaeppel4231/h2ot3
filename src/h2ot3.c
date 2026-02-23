@@ -8,7 +8,7 @@
 
 // Test 1: Dummy Test
 void h2ot3_backend_draw_window(h2ot3_window_t *win) {
-    printf("Drawing window %ux%u with title: %s\n", win->width_px, win->height_px, win->title);
+    printf("Drawing window %ux%u with title: %s\n", get_h2ot3_window_width_px(win), get_h2ot3_window_heigh_px(win), get_h2ot3_window_title(win));
 }
 
 // Test 2: Real XCB Window opening
@@ -93,6 +93,6 @@ int main(){
         return -1;
     }
     h2ot3_backend_draw_window(window);
-    test_xcb_window(window->width_px, window->height_px, window->title);
+    test_xcb_window(get_h2ot3_window_width_px(window), get_h2ot3_window_heigh_px(window), get_h2ot3_window_title(window));
     free_h2ot3_window(window);    
 }

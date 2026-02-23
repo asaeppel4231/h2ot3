@@ -3,14 +3,6 @@
 
 typedef unsigned int uint;
 
-//only for the first, please don't call the police because that
-struct h2ot3_window {
-    char* title;
-    uint width_px;
-    uint height_px;
-    void** child_objects;
-};
-
 typedef struct h2ot3_window h2ot3_window_t;
 
 #define MAX_WINDOW_TITLE_LEN 200
@@ -18,6 +10,8 @@ typedef struct h2ot3_window h2ot3_window_t;
 h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int opts);
 void            free_h2ot3_window(h2ot3_window_t* window);
 
-int             get_h2ot3_window_properties();
+char*           get_h2ot3_window_title(h2ot3_window_t* window);
+uint            get_h2ot3_window_width_px(h2ot3_window_t* window);
+uint            get_h2ot3_window_heigh_px(h2ot3_window_t* window);
 
 #endif
