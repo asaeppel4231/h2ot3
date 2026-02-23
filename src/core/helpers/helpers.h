@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-#define RETURN_IF_NULL(ptr) \
+#define RETURN_IF_NULL(ptr, value) \
 do{\
     if((ptr) == NULL){ \
-        return NULL; \
+        return (value); \
     } \
 }while(0)
 
