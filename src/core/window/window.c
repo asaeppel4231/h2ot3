@@ -9,7 +9,11 @@
 
 #define H2OT3_INVALID 1 /*only for the first*/ /*TODO: Move that to anything else*/ 
 
-h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int opts){
+
+/***********************************************
+**********  ALLOCATION / FREEING ***************
+************************************************/
+h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int flags){
     h2ot3_window_t* window = malloc(_internal_h2ot3_window_get_struct_size());
     RETURN_IF_NULL(window, NULL);
     _internal_h2ot3_window_set_title(window, _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN));
@@ -27,38 +31,55 @@ void            free_h2ot3_window(h2ot3_window_t* window){
     free(window);
 }
 
-char*           get_h2ot3_window_title(h2ot3_window_t* window){
+/***********************************************
+******************  GETTER *********************
+************************************************/
+char*           get_h2ot3_window_title (h2ot3_window_t* window){
     RETURN_IF_NULL(window, NULL);
     return _internal_h2ot3_window_get_title(window);
 }
 
-uint            get_h2ot3_window_width_px(h2ot3_window_t* window){
+uint            get_h2ot3_window_width_px (h2ot3_window_t* window){
     RETURN_IF_NULL(window, H2OT3_INVALID);
     return _internal_h2ot3_window_get_width_px(window);
 }
 
-uint            get_h2ot3_window_height_px(h2ot3_window_t* window){
+uint            get_h2ot3_window_height_px (h2ot3_window_t* window){
     RETURN_IF_NULL(window, H2OT3_INVALID);
     return _internal_h2ot3_window_get_height_px(window);
 }
 
-uint            set_h2ot3_window_title    (h2ot3_window_t* window, char* title){
+uint            get_h2ot3_window_visibility(h2ot3_window_t* window){
+    RETURN_IF_NULL(window, H2OT3_INVALID);
+    return _internal_h2ot3_window_get_visibility(window);
+}
+
+/***********************************************
+******************  SETTER *********************
+************************************************/
+
+mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title){
     RETURN_IF_NULL(window, MFALSE);
     _internal_h2ot3_window_set_title(window, title);
     return MTRUE;
 }
 
-uint            set_h2ot3_window_width_px (h2ot3_window_t* window, uint width_px){
+mbool           set_h2ot3_window_width_px  (h2ot3_window_t* window, uint width_px){
     RETURN_IF_NULL(window, MFALSE);
     _internal_h2ot3_window_set_width_px(window, width_px);
     return MTRUE;
 }
 
-uint            set_h2ot3_window_height_px(h2ot3_window_t* window, uint height_px){
+mbool           set_h2ot3_window_height_px (h2ot3_window_t* window, uint height_px){
     RETURN_IF_NULL(window, MFALSE);
     _internal_h2ot3_window_set_height_px(window, height_px);
     return MTRUE;
 }
 
+mbool           set_h2ot3_window_visibility(h2ot3_window_t* window, mbool visible){
+    RETURN_IF_NULL(window, MFALSE);
+    _internal_h2ot3_window_set_visibility(window, visible);
+    return MTRUE;
+}
 
-//TODO: Add backends
+//TODO: Implement backends
