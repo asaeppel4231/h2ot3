@@ -19,7 +19,8 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int
     _internal_h2ot3_window_set_title(window, _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN));
     _internal_h2ot3_window_set_width_px(window, width_px);
     _internal_h2ot3_window_set_height_px(window, height_px);
-    /*window->child_objects = NULL; */ /*FIXME: Add child_objects setter and getter and replace this*/
+    _internal_h2ot3_window_set_visibility(window, MTRUE);
+    /*window->child_objects = NULL; */ /*FIXME: Add container setter and getter and replace this*/
     return window;
 }
 //TODO: Add childrens
