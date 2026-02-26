@@ -11,4 +11,8 @@ mbool _internal_h2ot3_container_get_visibility    (h2ot3_container_t* container)
 mbool _internal_h2ot3_container_get_needs_redraw  (h2ot3_container_t* container);
 mbool _internal_h2ot3_container_get_needs_relayout(h2ot3_container_t* container);
 
+void _internal_h2ot3_container_set_visibility    (h2ot3_container_t* container, mbool visible);
+void _internal_h2ot3_container_set_needs_redraw  (h2ot3_container_t* container, mbool needs_redraw);
+void _internal_h2ot3_container_set_needs_relayout(h2ot3_container_t* container, mbool needs_relayout);
+
 #endif
