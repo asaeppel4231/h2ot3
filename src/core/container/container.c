@@ -4,6 +4,18 @@
 #include "helpers/helpers.h"
 #include "mbool.h"
 
+h2ot3_container_t* new_h2ot3_container (h2ot3_container_t* parent, uint start_flags, h2ot3_window_t* window, int opts){
+    h2ot3_container_t* container = malloc(_internal_h2ot3_container_get_struct_size());
+    RETURN_IF_NULL(container, NULL);
+    _internal_h2ot3_container_set_window(container, window);
+    return container;
+}
+
+void               free_h2ot3_container(h2ot3_container_t* container){
+    // TODO: Recursive freeing of childrens
+    free(container);
+}
+
 uint  h2ot3_container_get_flags_raw     (h2ot3_container_t* container){
     RETURN_IF_NULL(container, -1);
     return _internal_h2ot3_container_get_flags_raw(container);
