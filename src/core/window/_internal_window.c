@@ -13,6 +13,7 @@ struct h2ot3_window {
     uint height_px;
     uint visible:1;
     h2ot3_container_t* container;
+    void* backend_window; /*TODO: Replace with B<->C Communication*/
 };
 
 /***********************************************
@@ -38,7 +39,9 @@ mbool _internal_h2ot3_window_get_visibility(h2ot3_window_t* window){
     return window->visible;
 }
 
-
+h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
+    return window->container;
+}
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
@@ -56,4 +59,8 @@ void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_p
 
 void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visible){
     window->visible = visible;
+}
+
+void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_container_t* container){
+    window->container = container;
 }

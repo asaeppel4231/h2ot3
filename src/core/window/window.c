@@ -21,7 +21,7 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int
     _internal_h2ot3_window_set_width_px(window, width_px);
     _internal_h2ot3_window_set_height_px(window, height_px);
     _internal_h2ot3_window_set_visibility(window, MTRUE);
-    /*window->child_objects = NULL; */ /*FIXME: Add container setter and getter and replace this*/
+    _internal_h2ot3_window_set_container(window, NULL);
     return window;
 }
 //TODO: Add childrens
@@ -56,6 +56,11 @@ uint            get_h2ot3_window_visibility(h2ot3_window_t* window){
     return _internal_h2ot3_window_get_visibility(window);
 }
 
+h2ot3_container_t* get_h2ot3_window_container(h2ot3_window_t* window){
+    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, NULL);
+    return _internal_h2ot3_window_get_container(window);  
+}
+
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
@@ -81,6 +86,12 @@ mbool           set_h2ot3_window_height_px (h2ot3_window_t* window, uint height_
 mbool           set_h2ot3_window_visibility(h2ot3_window_t* window, mbool visible){
     SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, MFALSE);
     _internal_h2ot3_window_set_visibility(window, visible);
+    return MTRUE;
+}
+
+mbool           set_h2ot3_window_container (h2ot3_window_t* window, h2ot3_container_t* container){
+    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, MFALSE);
+    _internal_h2ot3_window_set_container(window, container);
     return MTRUE;
 }
 

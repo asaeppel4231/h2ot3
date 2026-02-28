@@ -1,11 +1,10 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include "_internal_container.h"
 #include "types.h"
 #include "mbool.h"
-#include "window.h"
 
+typedef struct h2ot3_window h2ot3_window_t;
 typedef struct h2ot3_container h2ot3_container_t;
 
 /***********************************************

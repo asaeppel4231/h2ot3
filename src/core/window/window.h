@@ -1,10 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "container.h"
 #include "types.h"
 #include "mbool.h"
 
-#define WINDOW_DEBUG MTRUE
+#define WINDOW_DEBUG MTRUE /* TODO: Use this*/
 
 typedef struct h2ot3_window h2ot3_window_t;
 
@@ -24,6 +25,8 @@ uint            get_h2ot3_window_width_px  (h2ot3_window_t* window);
 uint            get_h2ot3_window_height_px (h2ot3_window_t* window);
 uint            get_h2ot3_window_visibility(h2ot3_window_t* window);
 
+h2ot3_container_t* get_h2ot3_window_container(h2ot3_window_t* window);
+
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
@@ -31,5 +34,7 @@ mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title)
 mbool           set_h2ot3_window_width_px  (h2ot3_window_t* window, uint width_px);
 mbool           set_h2ot3_window_height_px (h2ot3_window_t* window, uint height_px);
 mbool           set_h2ot3_window_visibility(h2ot3_window_t* window, mbool visible);
+
+mbool           set_h2ot3_window_container (h2ot3_window_t* window, h2ot3_container_t* container);
 
 #endif
