@@ -1,10 +1,15 @@
 # merrno
 
-## About
+## Chapter 1: About
 
 This is **merrno**, copied from **fancyt** (which is a copy of **merrno** from **parg** in **yabuilder/c_port**).
 
-**Version**: 1.0
+But this is a *"for the work with one thread optimized"* version.
+Reasons for that see at Chapter 3: **Why Single Threaded**.
+Maintainers can be found at [MAINTAINERS.md](MAINTAINERS.md) for the specific versions.
 
+**Current Version**: 1.0.1a
 
+## Chapter 2: How to use
 
+## Chapter 3: Why Single Threaded

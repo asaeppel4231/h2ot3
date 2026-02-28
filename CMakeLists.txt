@@ -13,6 +13,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/mbool
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/container
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/container/grid
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/merrno
 )
 
 set(H2OT3_ENGINE_SOURCES
@@ -41,5 +42,7 @@ add_executable(h2ot3_demo
     ${H2OT3_ENGINE_SOURCES}
     ${H2OT3_DEMO}
 )
+
+add_subdirectory(src/core/merrno)
 
 target_link_libraries(h2ot3_demo xcb)

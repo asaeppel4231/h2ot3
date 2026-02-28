@@ -2,7 +2,7 @@
  * @file merrno.h
  * @brief My own errno - header.
  * @author asaeppel4231
- * @version 0.1
+ * @version 1.0.1a
  */
 #ifndef MERRNO_H
 #define MERRNO_H
@@ -65,6 +65,7 @@ typedef int merrno_use_global_t;
  * @note For thread safety, prefer passing an alternative error code variable
  *       instead of using the global ::global_merrno.
  */
-void set_merrno(merrno_ec_t ec, merrno_ec_t* alt, merrno_use_global_t use_global);
+void set_merrno(merrno_ec_t ec);
+merrno_ec_t get_merrno();
 
 #endif
