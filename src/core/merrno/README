@@ -7,9 +7,38 @@ This is **merrno**, copied from **fancyt** (which is a copy of **merrno** from *
 But this is a *"for the work with one thread optimized"* version.
 Reasons for that see at Chapter 3: **Why Single Threaded**.
 Maintainers can be found at [MAINTAINERS.md](MAINTAINERS.md) for the specific versions.
+You can use merrno in your programs to have a *lightweigth*, *fast* implementation of error codes. It's developed for *ease* and as a *portable* error code system.
 
-**Current Version**: 1.0.1a
+**Current Version**: 1.0.1b
 
 ## Chapter 2: How to use
 
+You can use `set_merrno(ec)` to set the global merrno error code.
+**Examples**:
+
+Set error code to invalid arg:
+
+```c
+set_merrno(MERRNO_EC_INV_ARG)
+```
+
+Set error code to out of range:
+
+```c
+set_merrno(MERRNO_EC_OUT_OF_RANGE)
+```
+
+You can use `get_merrno()` to get the global merrno error code.
+
+**A not realistic example:**
+
+Set error code to the actual error code, but with inverted value:
+
+```c
+set_merrno(~get_merrno())
+```
+
 ## Chapter 3: Why Single Threaded
+
+This version of merrno is used by the internal and public API error handling things in the h2ot3 core.
+It's *single-threaded* because it's most used by the UI changing functions (and UI can only changed by the main thread) and to *increase the speed* and to *reduce the complexity*.
