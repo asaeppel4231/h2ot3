@@ -7,6 +7,8 @@
 #include "types.h"
 #include "_internal_window.h"
 
+#include "merrno.h"
+
 #define H2OT3_INVALID 1 /*only for the first*/ /*TODO: Replace that with merrno*/ 
 
 
