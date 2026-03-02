@@ -9,6 +9,9 @@
 
 typedef struct h2ot3_window h2ot3_window_t;
 
+mbool _internal_h2ot3_window_init(h2ot3_window_t* window);
+mbool _internal_h2ot3_window_free(h2ot3_window_t* window);
+
 /***********************************************
 ******************  GETTER *********************
 ************************************************/

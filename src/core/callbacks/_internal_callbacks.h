@@ -3,9 +3,13 @@
 
 #include "mbool.h"
 
+#include <stddef.h>
+
 typedef struct callback_funcs callback_funcs_t;
 
 typedef mbool(*callback_func_t)(void*);
+
+size_t _internal_callbacks_get_struct_size();
 
 void _internal_callbacks_set_create_func(callback_funcs_t* funcs, callback_func_t create_func);
 void _internal_callbacks_set_destroy_func(callback_funcs_t* funcs, callback_func_t destroy_func);

@@ -6,6 +6,10 @@ struct callback_funcs {
     callback_func_t draw;
 };
 
+size_t _internal_callbacks_get_struct_size(){
+    return sizeof(callback_funcs_t);
+}
+
 void _internal_callbacks_set_create_func(callback_funcs_t* funcs, callback_func_t create_func){
     funcs->create = create_func;
 }

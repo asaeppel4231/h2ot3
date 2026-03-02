@@ -17,6 +17,7 @@
 h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int flags){
     h2ot3_window_t* window = malloc(_internal_h2ot3_window_get_struct_size());
     RETURN_IF_NULL(window, NULL);
+    _internal_h2ot3_window_init(window);
     _internal_h2ot3_window_set_title(window, _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN));
     _internal_h2ot3_window_set_width_px(window, width_px);
     _internal_h2ot3_window_set_height_px(window, height_px);
@@ -29,6 +30,7 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int
 void            free_h2ot3_window(h2ot3_window_t* window){
     // TODO: Recursive freeing of childrens
     // TODO: Add Widgets
+    _internal_h2ot3_window_free(window);
     free(_internal_h2ot3_window_get_title(window));
     free(window);
 }
