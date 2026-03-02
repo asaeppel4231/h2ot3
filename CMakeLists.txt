@@ -11,6 +11,10 @@ set(H2OT3_ENGINE_SOURCES
     src/core/container/grid/grid.c
     src/core/container/container.c
     src/core/container/_internal_container.c
+    src/core/callbacks/callbacks.c
+    src/core/callbacks/_internal_callbacks.c
+    src/core/c2b/_internal_c2b.c
+    src/core/c2b/c2b.c
 )
 
 set(H2OT3_DEMO src/h2ot3.c)
@@ -31,6 +35,8 @@ target_include_directories(h2ot3_demo PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/container
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/container/grid
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/merrno
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/c2b
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/core/callbacks
 )
 
 add_subdirectory(src/core/merrno)
