@@ -17,10 +17,10 @@
         } \
     } while(0)
 
-#define SET_MERRNO_AND_RETURN_VOID_IF_NULL(ptr, alt, use_global) \
+#define SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED(cond, ec) \
     do { \
-        if ((ptr) == NULL) { \
-            set_merrno(MERRNO_EC_ISNULL, alt, use_global); \
+        if (!(cond)) { \
+            set_merrno(ec); \
             return; \
         } \
     } while(0)
