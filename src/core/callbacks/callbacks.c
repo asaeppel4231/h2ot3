@@ -14,7 +14,7 @@ void callbacks_init(callback_funcs_t* funcs){
     _internal_callbacks_set_draw_func(funcs, NULL);
 }
 
-void callbacks_set_create_func(callback_funcs_t* funcs, callback_func_t create_func){ //TODO: Replace void with mbool
+void callbacks_set_create_func(callback_funcs_t* funcs, callback_func_t create_func){
     SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED(funcs != NULL, MERRNO_EC_ISNULL);
     _internal_callbacks_set_create_func(funcs, create_func);
 }

@@ -9,7 +9,7 @@ Reasons for that see at Chapter 3: **Why Single Threaded**.
 Maintainers can be found at [MAINTAINERS.md](MAINTAINERS.md) for the specific versions.
 You can use merrno in your programs to have a *lightweigth*, *fast* implementation of error codes. It's developed for *ease* and as a *portable* error code system.
 
-**Current Version**: 1.0.1b
+**Current Version**: 1.0.1c
 
 ## Chapter 2: How to use
 

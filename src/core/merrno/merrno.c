@@ -2,7 +2,7 @@
  * @file merrno.h
  * @brief My own errno - implementation.
  * @author asaeppel4231
- * @version 1.0.1b
+ * @version 1.0.1c
  */
 
 #include "merrno.h"

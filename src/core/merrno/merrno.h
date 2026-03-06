@@ -2,34 +2,19 @@
  * @file merrno.h
  * @brief My own errno - header.
  * @author asaeppel4231
- * @version 1.0.1b
+ * @version 1.0.1c
  */
 #ifndef MERRNO_H
 #define MERRNO_H
 
-#include <stdlib.h> /**< for the NULL macro*/
-
-#define SET_MERRNO_AND_RETURN_IF_NULL(ptr, retcode, error_code) \
-    do { \
-        if ((ptr) == NULL) { \
-            set_merrno(error_code); \
-            return (retcode); \
-        } \
-    } while(0)
+/* NULL is defined in stddef.h in the ANSI C Standard instead of stdlib.h which was here before!!!!*/
+#include <stddef.h>
 
 #define SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED(cond, ec) \
     do { \
         if (!(cond)) { \
             set_merrno(ec); \
             return; \
-        } \
-    } while(0)
-
-#define SET_MERRNO_AND_RETURN_IF_MALLOC_FAILED(ptr, retcode, alt, use_global) \
-    do { \
-        if ((ptr) == NULL) { \
-            set_merrno(MERRNO_EC_NO_MEMORY, alt, use_global); \
-            return (retcode); \
         } \
     } while(0)
 
@@ -61,16 +46,9 @@ typedef enum Merrno_Ec{
 
 extern merrno_ec_t global_merrno;
 
-typedef int merrno_use_global_t;
-
 /**
  * @brief Sets the merrno variable
  * @param ec The Error Code that's set
- * @param alt The pointer to the alternatively error code store variable
- * @param use_global It is 1, set_merrno will set the global merrno variable to ec, it is 0,
- * set_merrno will set alt to ec
- * @note For thread safety, prefer passing an alternative error code variable
- *       instead of using the global ::global_merrno.
  */
 void set_merrno(merrno_ec_t ec);
 merrno_ec_t get_merrno();
