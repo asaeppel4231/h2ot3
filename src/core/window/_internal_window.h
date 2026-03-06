@@ -7,6 +7,10 @@
 
 #include <stddef.h>
 
+#ifndef NDEBUG
+#define INTERNAL_WINDOW_DEBUG 1
+#endif
+
 typedef struct h2ot3_window h2ot3_window_t;
 
 mbool _internal_h2ot3_window_init(h2ot3_window_t* window);
