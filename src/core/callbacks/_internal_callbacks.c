@@ -22,6 +22,17 @@ void _internal_callbacks_set_draw_func(callback_funcs_t* funcs, callback_func_t 
     funcs->draw = draw_func;
 }
 
+callback_func_t _internal_callbacks_get_create_func(callback_funcs_t *funcs){
+    return funcs->create;
+}
+
+callback_func_t _internal_callbacks_get_destroy_func(callback_funcs_t *funcs){
+    return funcs->destroy;
+}
+
+callback_func_t _internal_callbacks_get_draw_func(callback_funcs_t*  funcs){
+    return funcs->draw;
+}
 
 void _internal_callbacks_call_create_func(callback_funcs_t* funcs, void* data){
     funcs->create(data);

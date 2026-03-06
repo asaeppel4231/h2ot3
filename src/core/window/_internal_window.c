@@ -24,6 +24,7 @@ struct h2ot3_window {
 mbool _internal_h2ot3_window_init(h2ot3_window_t* window){
     // TODO: Not hardcode the functions of the dummy backend
     window->funcs = malloc(callbacks_get_struct_size());
+    callbacks_init(window->funcs);
     callbacks_set_create_func(window->funcs, b_create_window);
     callbacks_call_create_func(window->funcs, NULL);
     callbacks_set_destroy_func(window->funcs, b_free_window);
