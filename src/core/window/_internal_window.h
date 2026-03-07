@@ -22,6 +22,7 @@ void _internal_h2ot3_window_free(h2ot3_window_t* window);
 ************************************************/
 size_t _internal_h2ot3_window_get_struct_size();
 char* _internal_h2ot3_window_get_title     (h2ot3_window_t* window);
+char** _internal_h2ot3_window_get_title_ptr(h2ot3_window_t* window);
 uint  _internal_h2ot3_window_get_width_px  (h2ot3_window_t* window);
 uint  _internal_h2ot3_window_get_height_px (h2ot3_window_t* window);
 mbool _internal_h2ot3_window_get_visibility(h2ot3_window_t* window);

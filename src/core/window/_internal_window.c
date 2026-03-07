@@ -8,6 +8,8 @@
 #include "_internal.h"
 
 #include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
 
 #if INTERNAL_WINDOW_DEBUG == 1
 #include <stdio.h>
@@ -36,6 +38,7 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf("\n");
     #endif
+    memset(window, 0, _internal_h2ot3_window_get_struct_size());
     window->funcs = malloc(callbacks_get_struct_size());
     callbacks_init(window->funcs);
     // TODO: Not hardcode the functions of the dummy backend
@@ -54,8 +57,8 @@ void _internal_h2ot3_window_free(h2ot3_window_t* window){
     printf("\n");
     #endif
     callbacks_call_destroy_func(window->funcs, NULL);
-    _internal_safe_free(window->funcs);
-    free(_internal_h2ot3_window_get_title(window));
+    _internal_safe_free((void**)&window->funcs);
+    _internal_safe_free((void**)_internal_h2ot3_window_get_title_ptr(window));
     return;
 }
 
@@ -80,6 +83,17 @@ char* _internal_h2ot3_window_get_title    (h2ot3_window_t* window){
     printf("\n");
     #endif
     return window->title;
+}
+
+char** _internal_h2ot3_window_get_title_ptr(h2ot3_window_t* window){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    printf(DEBUG "_internal_h2ot3_window_get_title was called.\n");
+    printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
+    printf(DEBUG "Returning (type: char*) string with address %p\n", window->title);
+    printf(DEBUG "and data %s\n", window->title);
+    printf("\n");
+    #endif
+    return &window->title;
 }
 
 uint  _internal_h2ot3_window_get_width_px (h2ot3_window_t* window){
@@ -132,8 +146,10 @@ void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: char*) with address %p\n", title);
     printf(DEBUG "and data %s\n", title);
-    printf(DEBUG "extra information: window->title (type: char*) has currently address %p\n", window->title);
-    printf(DEBUG "and data %s\n", window->title);
+    if(window->title != NULL){
+        printf(DEBUG "extra information: window->title (type: char*) has currently address %p\n", window->title);
+        printf(DEBUG "and data %s\n", window->title);
+    }
     printf("\n");
     #endif
     window->title = title;
@@ -145,7 +161,7 @@ void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px
     printf(DEBUG "_internal_h2ot3_window_set_width_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: uint) with value %u\n", width_px);
-    printf(DEBUG "extra information: window->width_px has currenctly value %u\n", window->width_px);
+    printf(DEBUG "extra information: window->width_px (type: uint) has currently value %u\n", window->width_px);
     printf("\n");
     #endif
     window->width_px = width_px;
@@ -157,7 +173,7 @@ void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_p
     printf(DEBUG "_internal_h2ot3_window_set_height_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: uint) with value %u\n", height_px);
-    printf(DEBUG "extra information: window->height has currenctly value %u\n", window->height_px);
+    printf(DEBUG "extra information: window->height (type: uint) has currently value %u\n", window->height_px);
     printf("\n");
     #endif
     window->height_px = height_px;
@@ -169,7 +185,7 @@ void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visibl
     printf(DEBUG "_internal_h2ot3_window_set_visibility was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: mbool (aka unsigned char)) with value %u\n", visible);
-    printf(DEBUG "extra information: window->visible has currenctly value %u\n", window->visible);
+    printf(DEBUG "extra information: window->visible (type: mbool (aka unsigned char) ) has currently value %u\n", window->visible);
     printf("\n");
     #endif
     window->visible = visible;
@@ -181,7 +197,9 @@ void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_contain
     printf(DEBUG "_internal_h2ot3_window_set_container was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: h2ot3_container_t*) with address %p\n", container);
-    printf(DEBUG "extra information: window->container has currenctly address %p\n", window->container);
+    if(window->container != NULL){
+        printf(DEBUG "extra information: window->container has currently address %p\n", window->container);
+    }
     printf("\n");
     #endif
     window->container = container;
