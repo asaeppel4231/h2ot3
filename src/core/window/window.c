@@ -1,17 +1,15 @@
 #include "window.h"
 
-#include <stdlib.h>
-
 #include "_internal/_internal.h"
 #include "_internal_window.h"
 
-#include "helpers/helpers.h"
 #include "types.h"
 
 #include "merrno.h"
 #include "mbool.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 /***********************************************
 **********  ALLOCATION / FREEING ***************
@@ -33,7 +31,6 @@ void            free_h2ot3_window(h2ot3_window_t* window){
     // TODO: Recursive freeing of childrens
     // TODO: Add Widgets
     _internal_h2ot3_window_free(window);
-    free(_internal_h2ot3_window_get_title(window));
     free(window);
 }
 
@@ -68,7 +65,6 @@ h2ot3_container_t* get_h2ot3_window_container(h2ot3_window_t* window){
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
-
 mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title){
     SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, MFALSE);
     _internal_h2ot3_window_set_title(window, title);

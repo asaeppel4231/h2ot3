@@ -2,6 +2,7 @@
 #define INTERNAL_WINDOW_H
 
 #include "_internal_container.h"
+
 #include "types.h"
 #include "mbool.h"
 
@@ -13,8 +14,8 @@
 
 typedef struct h2ot3_window h2ot3_window_t;
 
-mbool _internal_h2ot3_window_init(h2ot3_window_t* window);
-mbool _internal_h2ot3_window_free(h2ot3_window_t* window);
+void  _internal_h2ot3_window_init(h2ot3_window_t* window);
+void _internal_h2ot3_window_free(h2ot3_window_t* window);
 
 /***********************************************
 ******************  GETTER *********************

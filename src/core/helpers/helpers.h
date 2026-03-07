@@ -13,4 +13,10 @@ do{\
 
 #define DEBUG "[ DEBUG ]: "
 
+#define INFO     "[ INFO ]: "
+#define WARN     "[ WARN ]: "
+#define ERROR    "[ ERROR ]: "
+#define CRITICAL "[ CRITICAL ]: "
+#define FATAL    "[ FATAL ]: "
+
 #endif

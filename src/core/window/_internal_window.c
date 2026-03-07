@@ -1,8 +1,11 @@
 #include "_internal_window.h"
+
 #include "container.h"
 #include "dummy.h"
 #include "callbacks.h"
 #include "helpers.h"
+
+#include "_internal.h"
 
 #include <stdlib.h>
 
@@ -27,8 +30,7 @@ struct h2ot3_window {
     callback_funcs_t* funcs;
 };
 
-mbool _internal_h2ot3_window_init(h2ot3_window_t* window){
-    // TODO: Not hardcode the functions of the dummy backend
+void _internal_h2ot3_window_init(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_init was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -36,14 +38,15 @@ mbool _internal_h2ot3_window_init(h2ot3_window_t* window){
     #endif
     window->funcs = malloc(callbacks_get_struct_size());
     callbacks_init(window->funcs);
+    // TODO: Not hardcode the functions of the dummy backend
     callbacks_set_create_func(window->funcs, b_create_window);
     callbacks_call_create_func(window->funcs, NULL);
     callbacks_set_destroy_func(window->funcs, b_free_window);
     callbacks_set_draw_func(window->funcs, b_draw_window);
-    return MTRUE;
+    return;
 }
 
-mbool _internal_h2ot3_window_free(h2ot3_window_t* window){
+void _internal_h2ot3_window_free(h2ot3_window_t* window){
     // TODO: Not hardcode the functions of the dummy backend
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_free was called.\n");
@@ -51,8 +54,9 @@ mbool _internal_h2ot3_window_free(h2ot3_window_t* window){
     printf("\n");
     #endif
     callbacks_call_destroy_func(window->funcs, NULL);
-    free(window->funcs);
-    return MTRUE;
+    _internal_safe_free(window->funcs);
+    free(_internal_h2ot3_window_get_title(window));
+    return;
 }
 
 /***********************************************
