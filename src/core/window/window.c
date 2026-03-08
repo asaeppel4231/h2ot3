@@ -11,7 +11,6 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-// TODO: Remove that
 #include "callbacks.h"
 
 /***********************************************
