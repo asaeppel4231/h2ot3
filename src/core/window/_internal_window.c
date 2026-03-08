@@ -5,8 +5,25 @@
 #include "callbacks.h"
 #include "helpers.h"
 
+#include "config.h"
+
 #include "dummy.h"
+
+#if H2OT3_SUPPORT_XCB == 1 
 #include "xcb.h"
+#endif
+#if H2OT3_SUPPORT_WAYLAND == 1
+#include "wayland.h" /*not implemented yet*/
+#endif
+#if H2OT3_SUPPORT_XORG == 1
+#include "xorg.h" /*not implemented yet*/
+#endif
+#if H2OT3_SUPPORT_WIN32 == 1
+#include "win32.h" /*not implemented yet*/
+#endif
+#if H2OT3_SUPPORT_COCOA == 1
+#include "cocoa.h" /*not implemented yet*/
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -53,7 +70,6 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
 }
 
 void _internal_h2ot3_window_free(h2ot3_window_t* window){
-    // TODO: Not hardcode the functions of the dummy backend
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_free")
     LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);

@@ -18,14 +18,13 @@
 ************************************************/
 h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int flags){
     h2ot3_window_t* window = malloc(_internal_h2ot3_window_get_struct_size());
-    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, NULL);
+    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_NO_MEMORY, NULL);
     _internal_h2ot3_window_init(window);
     _internal_h2ot3_window_set_title(window, _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN));
     _internal_h2ot3_window_set_width_px(window, width_px);
     _internal_h2ot3_window_set_height_px(window, height_px);
     _internal_h2ot3_window_set_visibility(window, MTRUE);
     _internal_h2ot3_window_set_container(window, NULL);
-    // TODO: Not hardcode the address (portability)
     callbacks_call_create_func(
          _internal_h2ot3_window_get_funcs(window),
         window
