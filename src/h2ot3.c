@@ -5,6 +5,8 @@
 #include "window.h"
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 // Test 1: Dummy Test
 void h2ot3_backend_draw_window(h2ot3_window_t *win) {
@@ -20,7 +22,14 @@ int main(){
         return -1;
     }
     h2ot3_backend_draw_window(window);
+    char* test = malloc(sizeof(char)*4);
+    test[0] = 'A';
+    test[1] = 'B';
+    test[2] = 'C';
+    test[3] = '\0';
+    set_h2ot3_window_title(window, test);
     /* because test_xcb_window not defined; "see Test 2:" */
     //test_xcb_window(get_h2ot3_window_width_px(window), get_h2ot3_window_heigh_px(window), get_h2ot3_window_title(window));
-    free_h2ot3_window(window);    
+    sleep(5);
+    free_h2ot3_window(window);
 }

@@ -17,6 +17,8 @@ set(H2OT3_ENGINE_SOURCES
     src/core/c2b/c2b.c
     src/backends/dummy/dummy.c
     src/backends/dummy/_internal_dummy.c
+    src/backends/xcb/_internal_xcb.c
+    src/backends/xcb/xcb.c
 )
 
 set(H2OT3_DEMO src/h2ot3.c)
@@ -40,6 +42,7 @@ target_include_directories(h2ot3_demo PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/c2b
     ${CMAKE_CURRENT_SOURCE_DIR}/src/core/callbacks
     ${CMAKE_CURRENT_SOURCE_DIR}/src/backends/dummy
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/backends/xcb
 )
 
 add_subdirectory(src/core/merrno)

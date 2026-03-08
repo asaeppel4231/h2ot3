@@ -3,6 +3,7 @@
 
 #include "_internal_container.h"
 
+#include "callbacks.h"
 #include "types.h"
 #include "mbool.h"
 
@@ -26,6 +27,9 @@ char** _internal_h2ot3_window_get_title_ptr(h2ot3_window_t* window);
 uint  _internal_h2ot3_window_get_width_px  (h2ot3_window_t* window);
 uint  _internal_h2ot3_window_get_height_px (h2ot3_window_t* window);
 mbool _internal_h2ot3_window_get_visibility(h2ot3_window_t* window);
+
+// TODO: Now only for the first
+callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window);
 
 h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window);
 

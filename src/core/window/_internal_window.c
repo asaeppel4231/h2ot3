@@ -1,11 +1,12 @@
 #include "_internal_window.h"
+#include "_internal.h"
 
 #include "container.h"
-#include "dummy.h"
 #include "callbacks.h"
 #include "helpers.h"
 
-#include "_internal.h"
+#include "dummy.h"
+#include "xcb.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -41,11 +42,10 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
     memset(window, 0, _internal_h2ot3_window_get_struct_size());
     window->funcs = malloc(callbacks_get_struct_size());
     callbacks_init(window->funcs);
-    // TODO: Not hardcode the functions of the dummy backend
-    callbacks_set_create_func(window->funcs, b_create_window);
-    callbacks_call_create_func(window->funcs, NULL);
-    callbacks_set_destroy_func(window->funcs, b_free_window);
-    callbacks_set_draw_func(window->funcs, b_draw_window);
+    // TODO: Not hardcode the functions of the dummy backend (aka add runtime function changing)
+    callbacks_set_create_func(window->funcs, b_xcb_create_window);
+    callbacks_set_destroy_func(window->funcs, b_xcb_destroy_window);
+    callbacks_set_draw_func(window->funcs, b_xcb_draw_window);
     return;
 }
 
@@ -56,7 +56,7 @@ void _internal_h2ot3_window_free(h2ot3_window_t* window){
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf("\n");
     #endif
-    callbacks_call_destroy_func(window->funcs, NULL);
+    callbacks_call_destroy_func(window->funcs, window);
     _internal_safe_free((void**)&window->funcs);
     _internal_safe_free((void**)_internal_h2ot3_window_get_title_ptr(window));
     return;
@@ -140,7 +140,7 @@ h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
 ******************  SETTER *********************
 ************************************************/
 void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
-    callbacks_call_draw_func(window->funcs, NULL); // TODO: Replace this with a job queue
+    callbacks_call_draw_func(window->funcs, window); // TODO: Replace this with a job queue
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_title was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -156,7 +156,7 @@ void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
 }
 
 void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px){
-    callbacks_call_draw_func(window->funcs, NULL);
+    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_width_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -168,7 +168,7 @@ void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px
 }
 
 void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_px){
-    callbacks_call_draw_func(window->funcs, NULL);
+    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_height_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -180,7 +180,7 @@ void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_p
 }
 
 void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visible){
-    callbacks_call_draw_func(window->funcs, NULL);
+    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_visibility was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -192,7 +192,7 @@ void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visibl
 }
 
 void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_container_t* container){
-    callbacks_call_draw_func(window->funcs, NULL);
+    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_container was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -203,4 +203,8 @@ void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_contain
     printf("\n");
     #endif
     window->container = container;
+}
+
+callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window){
+    return window->funcs;
 }

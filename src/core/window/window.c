@@ -11,6 +11,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+// TODO: Remove that
+#include "callbacks.h"
+
 /***********************************************
 **********  ALLOCATION / FREEING ***************
 ************************************************/
@@ -23,6 +26,12 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int
     _internal_h2ot3_window_set_height_px(window, height_px);
     _internal_h2ot3_window_set_visibility(window, MTRUE);
     _internal_h2ot3_window_set_container(window, NULL);
+    // TODO: Not hardcode the address (portability)
+    callbacks_call_create_func(
+         _internal_h2ot3_window_get_funcs(window),
+        window
+    );
+
     return window;
 }
 //TODO: Add childrens
@@ -65,6 +74,8 @@ h2ot3_container_t* get_h2ot3_window_container(h2ot3_window_t* window){
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
+
+// FIXME: Create a deep copy instead of a flat copy to avoid errors
 mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title){
     SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, MFALSE);
     _internal_h2ot3_window_set_title(window, title);

@@ -3,8 +3,8 @@
 
 #include "mbool.h"
 
-mbool b_create_window(void* data);
-mbool b_free_window(void* data);
-mbool b_draw_window(void* data);
+mbool b_dummy_create_window(void* data);
+mbool b_dummy_free_window(void* data);
+mbool b_dummy_draw_window(void* data);
 
 #endif
