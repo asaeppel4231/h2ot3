@@ -28,10 +28,9 @@ struct h2ot3_window {
     uint width_px;
     uint height_px;
     uint visible:1;
-    h2ot3_container_t* container;
-    void* backend_window; /*TODO: Replace with B<->C Communication*/ /*TODO: Remove backend_window or initialize it*/
+    h2ot3_container_t* root_container; 
     callback_funcs_t* funcs;
-};
+}; /*TODO: Add more B<->C Communication*/ 
 
 void _internal_h2ot3_window_init(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
@@ -40,12 +39,16 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
     printf("\n");
     #endif
     memset(window, 0, _internal_h2ot3_window_get_struct_size());
-    window->funcs = malloc(callbacks_get_struct_size());
-    callbacks_init(window->funcs);
+    callback_funcs_t* tmp = malloc(callbacks_get_struct_size());
+    if(tmp == NULL){
+        return;
+    }
+    _internal_h2ot3_window_set_funcs(window, tmp);
+    callbacks_init(_internal_h2ot3_window_get_funcs(window));
     // TODO: Not hardcode the functions of the dummy backend (aka add runtime function changing)
-    callbacks_set_create_func(window->funcs, b_xcb_create_window);
-    callbacks_set_destroy_func(window->funcs, b_xcb_destroy_window);
-    callbacks_set_draw_func(window->funcs, b_xcb_draw_window);
+    callbacks_set_create_func(_internal_h2ot3_window_get_funcs(window), b_xcb_create_window);
+    callbacks_set_destroy_func(_internal_h2ot3_window_get_funcs(window), b_xcb_destroy_window);
+    callbacks_set_draw_func(_internal_h2ot3_window_get_funcs(window), b_xcb_draw_window);
     return;
 }
 
@@ -130,17 +133,20 @@ h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_get_container was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
-    printf(DEBUG "Returning (type: h2ot3_container_t*) struct pointer with address %p\n", window->container);
+    printf(DEBUG "Returning (type: h2ot3_container_t*) struct pointer with address %p\n", window->root_container);
     printf("\n");
     #endif
-    return window->container;
+    return window->root_container;
+}
+
+callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window){
+    return window->funcs;
 }
 
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
 void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
-    callbacks_call_draw_func(window->funcs, window); // TODO: Replace this with a job queue
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_title was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -152,11 +158,19 @@ void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
     }
     printf("\n");
     #endif
-    window->title = title;
+    _internal_safe_free((void**)_internal_h2ot3_window_get_title_ptr(window));
+    window->title = _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN);
+    #if INTERNAL_WINDOW_DEBUG == 1
+    printf(DEBUG "Back in _internal_h2ot3_window_set_title.\n");
+    if(window->title != NULL){
+        printf(DEBUG "extra information: window->title (type: char*) has now address %p\n", window->title);
+        printf(DEBUG "and data %s\n", window->title);
+    }
+    printf("\n");
+    #endif
 }
 
 void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px){
-    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_width_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -168,7 +182,6 @@ void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px
 }
 
 void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_px){
-    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_height_px was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -180,7 +193,6 @@ void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_p
 }
 
 void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visible){
-    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_visibility was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
@@ -192,19 +204,27 @@ void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visibl
 }
 
 void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_container_t* container){
-    callbacks_call_draw_func(window->funcs, window);
     #if INTERNAL_WINDOW_DEBUG == 1
     printf(DEBUG "_internal_h2ot3_window_set_container was called.\n");
     printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
     printf(DEBUG "2nd parameter (type: h2ot3_container_t*) with address %p\n", container);
-    if(window->container != NULL){
-        printf(DEBUG "extra information: window->container has currently address %p\n", window->container);
+    if(window->root_container != NULL){
+        printf(DEBUG "extra information: window->container (type: h2ot3_container_t*) has currently address %p\n", window->root_container);
     }
     printf("\n");
     #endif
-    window->container = container;
+    window->root_container = container;
 }
 
-callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window){
-    return window->funcs;
+void _internal_h2ot3_window_set_funcs(h2ot3_window_t* window, callback_funcs_t* funcs){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    printf(DEBUG "_internal_h2ot3_window_set_funcs was called.\n");
+    printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
+    printf(DEBUG "2nd parameter (type: callback_funcs_t*) with address %p\n", funcs);
+    if(window->funcs != NULL){
+        printf(DEBUG "extra information: window->funcs (type: callback_funcs_t*) has currently address %p\n", window->funcs);
+    }
+    printf("\n");
+    #endif
+    window->funcs = funcs;
 }

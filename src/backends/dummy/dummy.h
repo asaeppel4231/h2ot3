@@ -1,6 +1,8 @@
 #ifndef DUMMY_H
 #define DUMMY_H
 
+//TODO: Implement backends
+
 #include "mbool.h"
 
 mbool b_dummy_create_window(void* data);
