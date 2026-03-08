@@ -140,6 +140,12 @@ h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
 }
 
 callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    printf(DEBUG "_internal_h2ot3_window_get_funcs was called.\n");
+    printf(DEBUG "1st parameter (type: h2ot3_window_t*) with address %p\n", window);
+    printf(DEBUG "Returning (type: callback_funcs_t*) struct pointer with address %p\n", window->funcs);
+    printf("\n");
+    #endif
     return window->funcs;
 }
 
