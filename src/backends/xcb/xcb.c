@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <xcb/xcb.h>
 
@@ -64,6 +65,19 @@ mbool b_xcb_create_window(void* data){
         0,
         NULL
     );
+    const char* title = get_h2ot3_window_title(win_frontend);
+
+    xcb_change_property(
+        connection,
+        XCB_PROP_MODE_REPLACE,
+        bw->win,
+        XCB_ATOM_WM_NAME,
+        XCB_ATOM_STRING,
+        8,
+        strlen(title),
+        title
+    );
+
 
     // In Liste eintragen (ohne Überschreiben)
     num_windows++;

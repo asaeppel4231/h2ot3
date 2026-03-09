@@ -10,6 +10,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "callbacks.h"
 
@@ -20,7 +21,7 @@ h2ot3_window_t* new_h2ot3_window(char* title, uint width_px, uint height_px, int
     h2ot3_window_t* window = malloc(_internal_h2ot3_window_get_struct_size());
     SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_NO_MEMORY, NULL);
     _internal_h2ot3_window_init(window);
-    _internal_h2ot3_window_set_title(window, _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN));
+    _internal_h2ot3_window_set_title(window, title);
     _internal_h2ot3_window_set_width_px(window, width_px);
     _internal_h2ot3_window_set_height_px(window, height_px);
     _internal_h2ot3_window_set_visibility(window, MTRUE);
@@ -74,7 +75,8 @@ h2ot3_container_t* get_h2ot3_window_container(h2ot3_window_t* window){
 ************************************************/
 
 mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title){
-    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_ISNULL, MFALSE);
+    SET_MERRNO_AND_RETURN_IF_COND_FAILED(window != NULL, MERRNO_EC_INV_1ST_ARG, MFALSE);
+    SET_MERRNO_AND_RETURN_IF_COND_FAILED(title != NULL, MERRNO_EC_INV_2ND_ARG, MFALSE);
     _internal_h2ot3_window_set_title(window, title);
     callbacks_call_draw_func(_internal_h2ot3_window_get_funcs(window), window); // TODO: Replace this with a job queue
     return MTRUE;

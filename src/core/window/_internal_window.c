@@ -8,6 +8,7 @@
 #include "config.h"
 
 #include "dummy.h"
+#include <time.h>
 
 #if H2OT3_SUPPORT_XCB == 1 
 #include "xcb.h"
@@ -98,7 +99,9 @@ char* _internal_h2ot3_window_get_title    (h2ot3_window_t* window){
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_title")
     LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
     LOG_RETURN("char*", TCA, "%p,\n", window->title);
-    LOG_DEBUG("and data %s\n", window->title);
+    if(window->title != NULL){
+        LOG_DEBUG("and data %s\n", window->title);
+    }
     printf("\n");
     #endif
     return window->title;
@@ -109,8 +112,10 @@ char** _internal_h2ot3_window_get_title_ptr(h2ot3_window_t* window){
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_title_ptr")
     LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
     LOG_RETURN("char**", TCA, "%p,\n", &window->title);
-    LOG_DEBUG("data %s\n", window->title);
-    LOG_DEBUG("and in the original (type: char*) with address %p\n", window->title);
+    if(window->title != NULL){
+        LOG_DEBUG("data %s\n", window->title);
+        LOG_DEBUG("and in the original (type: char*) with address %p\n", window->title);
+    }
     printf("\n");
     #endif
     return &window->title;
@@ -174,8 +179,8 @@ void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
     LOG_FUNCTION_CALL("_internal_h2ot3_window_set_title");
     LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
     LOG_PARAMETER("2nd", "char*", TCA, "%p\n", title);
-    LOG_DEBUG("and data %s\n", title);
     if(window->title != NULL){
+        LOG_DEBUG("and data %s\n", title);
         LOG_DEBUG("extra information: window->title (type: char*) has currently address %p\n", window->title);
         LOG_DEBUG("and data %s\n", window->title);
     }
