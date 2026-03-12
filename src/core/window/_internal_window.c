@@ -179,8 +179,8 @@ void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
     LOG_FUNCTION_CALL("_internal_h2ot3_window_set_title");
     LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
     LOG_PARAMETER("2nd", "char*", TCA, "%p\n", title);
+    LOG_DEBUG("and data %s\n", title);
     if(window->title != NULL){
-        LOG_DEBUG("and data %s\n", title);
         LOG_DEBUG("extra information: window->title (type: char*) has currently address %p\n", window->title);
         LOG_DEBUG("and data %s\n", window->title);
     }

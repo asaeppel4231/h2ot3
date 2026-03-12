@@ -11,8 +11,8 @@ int main(){
     if(window == NULL){
         return -1;
     }
+    sleep(1);
     set_h2ot3_window_title(window, "ABC");
-    printf("window_title: %s", get_h2ot3_window_title(window));
     sleep(1);
     free_h2ot3_window(window);
 }

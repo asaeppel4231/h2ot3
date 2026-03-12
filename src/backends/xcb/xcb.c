@@ -65,25 +65,14 @@ mbool b_xcb_create_window(void* data){
         0,
         NULL
     );
-    const char* title = get_h2ot3_window_title(win_frontend);
-
-    xcb_change_property(
-        connection,
-        XCB_PROP_MODE_REPLACE,
-        bw->win,
-        XCB_ATOM_WM_NAME,
-        XCB_ATOM_STRING,
-        8,
-        strlen(title),
-        title
-    );
-
 
     // In Liste eintragen (ohne Überschreiben)
     num_windows++;
     window_list = realloc(window_list, sizeof(void*) * num_windows);
     window_list[num_windows - 1] = bw;
 
+    b_xcb_draw_window(data);
+    
     return MTRUE;
 }
 
@@ -104,6 +93,18 @@ mbool b_xcb_draw_window(void* data){
         printf("ERROR: no backend window found for draw\n");
         return MFALSE;
     }
+    const char* title = get_h2ot3_window_title(win_frontend);
+
+    xcb_change_property(
+        connection,
+        XCB_PROP_MODE_REPLACE,
+        bw->win,
+        XCB_ATOM_WM_NAME,
+        XCB_ATOM_STRING,
+        8,
+        strlen(title),
+        title
+    );
 
     xcb_map_window(connection, bw->win);
     xcb_flush(connection);

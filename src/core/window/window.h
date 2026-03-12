@@ -1,13 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "container.h"
 #include "types.h"
 #include "mbool.h"
 
-#define WINDOW_DEBUG MTRUE /* TODO: Use this*/
-
 typedef struct h2ot3_window h2ot3_window_t;
+typedef struct h2ot3_container h2ot3_container_t ;
 
 #define MAX_WINDOW_TITLE_LEN 200
 
@@ -34,7 +32,8 @@ mbool           set_h2ot3_window_title     (h2ot3_window_t* window, char* title)
 mbool           set_h2ot3_window_width_px  (h2ot3_window_t* window, uint width_px);
 mbool           set_h2ot3_window_height_px (h2ot3_window_t* window, uint height_px);
 mbool           set_h2ot3_window_visibility(h2ot3_window_t* window, mbool visible);
-
 mbool           set_h2ot3_window_container (h2ot3_window_t* window, h2ot3_container_t* container);
+
+void            explicit_update_h2ot3_window(h2ot3_window_t* window, int flags);
 
 #endif

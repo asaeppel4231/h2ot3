@@ -109,3 +109,7 @@ mbool           set_h2ot3_window_container (h2ot3_window_t* window, h2ot3_contai
     callbacks_call_draw_func(_internal_h2ot3_window_get_funcs(window), window);
     return MTRUE;
 }
+
+void            explicit_update_h2ot3_window(h2ot3_window_t* window, int flags){
+    callbacks_call_draw_func(_internal_h2ot3_window_get_funcs(window), window);
+}
