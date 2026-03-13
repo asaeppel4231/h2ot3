@@ -7,8 +7,6 @@
 typedef struct h2ot3_window h2ot3_window_t;
 typedef struct h2ot3_container h2ot3_container_t ;
 
-#define MAX_WINDOW_TITLE_LEN 200
-
 /***********************************************
 **********  ALLOCATION / FREEING ***************
 ************************************************/

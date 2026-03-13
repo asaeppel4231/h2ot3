@@ -1,8 +1,6 @@
 #ifndef INTERNAL_WINDOW_H
 #define INTERNAL_WINDOW_H
 
-#include "_internal_container.h"
-
 #include "callbacks.h"
 #include "types.h"
 #include "mbool.h"
@@ -13,7 +11,10 @@
 #define INTERNAL_WINDOW_DEBUG 1
 #endif
 
+#define MAX_WINDOW_TITLE_LEN 200
+
 typedef struct h2ot3_window h2ot3_window_t;
+typedef struct h2ot3_container h2ot3_container_t;
 
 void  _internal_h2ot3_window_init(h2ot3_window_t* window);
 void _internal_h2ot3_window_free(h2ot3_window_t* window);

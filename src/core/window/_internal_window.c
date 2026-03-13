@@ -1,7 +1,6 @@
 #include "_internal_window.h"
 #include "_internal.h"
 
-#include "container.h"
 #include "callbacks.h"
 #include "helpers.h"
 
@@ -33,8 +32,6 @@
 #if INTERNAL_WINDOW_DEBUG == 1
 #include <stdio.h>
 #endif
-
-typedef struct h2ot3_container h2ot3_container_t;
 
 /* only for prototyping*/
 struct h2ot3_container{
