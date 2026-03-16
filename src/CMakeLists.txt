@@ -36,3 +36,7 @@ target_include_directories(h2ot3_engine PUBLIC
 )
 
 add_subdirectory(core/merrno)
+
+if(H2OT3_BUILD_TESTCODE)
+    add_subdirectory(testcode)
+endif()
