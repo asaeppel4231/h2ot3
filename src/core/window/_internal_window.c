@@ -7,6 +7,7 @@
 #include "config.h"
 
 #include "dummy.h"
+
 #include <time.h>
 
 #if H2OT3_SUPPORT_XCB == 1 
@@ -60,10 +61,7 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
     }
     _internal_h2ot3_window_set_funcs(window, tmp);
     callbacks_init(_internal_h2ot3_window_get_funcs(window));
-    // TODO: Not hardcode the functions of the dummy backend (aka add runtime function changing)
-    callbacks_set_create_func(_internal_h2ot3_window_get_funcs(window), b_xcb_create_window);
-    callbacks_set_destroy_func(_internal_h2ot3_window_get_funcs(window), b_xcb_destroy_window);
-    callbacks_set_draw_func(_internal_h2ot3_window_get_funcs(window), b_xcb_draw_window);
+    _internal_h2ot3_window_setup_default_callbacks(window);
     return;
 }
 
@@ -252,4 +250,65 @@ void _internal_h2ot3_window_set_funcs(h2ot3_window_t* window, callback_funcs_t* 
     printf("\n");
     #endif
     window->funcs = funcs;
+}
+
+//TODO: Add runtime function changing
+void _internal_h2ot3_window_setup_default_callbacks(h2ot3_window_t* window) {
+    callbacks_init(_internal_h2ot3_window_get_funcs(window));
+
+    #if H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_DUMMY
+
+        #if H2OT3_SUPPORT_DUMMY
+            callbacks_set_create_func(_internal_h2ot3_window_get_funcs(window), b_dummy_create_window);
+            callbacks_set_destroy_func(_internal_h2ot3_window_get_funcs(window), b_dummy_destroy_window);
+            callbacks_set_draw_func(_internal_h2ot3_window_get_funcs(window), b_dummy_draw_window);
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is DUMMY, but H2OT3_SUPPORT_DUMMY == 0"
+        #endif
+
+    #elif H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_XCB
+
+        #if H2OT3_SUPPORT_XCB
+            callbacks_set_create_func(_internal_h2ot3_window_get_funcs(window), b_xcb_create_window);
+            callbacks_set_destroy_func(_internal_h2ot3_window_get_funcs(window), b_xcb_destroy_window);
+            callbacks_set_draw_func(_internal_h2ot3_window_get_funcs(window), b_xcb_draw_window);
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is XCB, but H2OT3_SUPPORT_XCB == 0"
+        #endif
+
+    #elif H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_WAYLAND
+
+        #if H2OT3_SUPPORT_WAYLAND
+            // wayland-callbacks in the future
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is WAYLAND, but H2OT3_SUPPORT_WAYLAND == 0"
+        #endif
+
+    #elif H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_XORG
+
+        #if H2OT3_SUPPORT_XORG
+            // xorg-callbacks in the future
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is XORG, but H2OT3_SUPPORT_XORG == 0"
+        #endif
+
+    #elif H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_WIN32
+
+        #if H2OT3_SUPPORT_WIN32
+            // win32-callbacks in the future
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is WIN32, but H2OT3_SUPPORT_WIN32 == 0"
+        #endif
+
+
+    #elif H2OT3_DEFAULT_BACKEND == H2OT3_BACKEND_COCOA
+
+        #if H2OT3_SUPPORT_COCOA
+            // win32-callbacks in the future
+        #else
+            #error "H2OT3_DEFAULT_BACKEND is COCOA, but H2OT3_SUPPORT_COCOA == 0"
+        #endif
+    #else
+        #error "Unknown H2OT3_DEFAULT_BACKEND"
+    #endif
 }

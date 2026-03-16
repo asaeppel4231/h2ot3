@@ -22,6 +22,6 @@ typedef enum h2ot3_backend{
     H2OT3_BACKEND_COCOA
 }h2ot3_backend_t;
 
-#define H2OT3_DEFAULT_BACKEND 1
+#define H2OT3_DEFAULT_BACKEND H2OT3_BACKEND_DUMMY
 
 #endif

@@ -8,7 +8,7 @@ mbool b_dummy_create_window(void* data){
     return MTRUE;
 }
 
-mbool b_dummy_free_window(void* data){
+mbool b_dummy_destroy_window(void* data){
     printf("dummy_backend: b_free_window was called\n");
     return MTRUE;
 }

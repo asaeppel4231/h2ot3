@@ -41,4 +41,10 @@ void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visibl
 void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_container_t* container);
 void _internal_h2ot3_window_set_funcs(h2ot3_window_t* window, callback_funcs_t* funcs);
 
+/***********************************************
+*******************  SETUP *********************
+************************************************/
+void _internal_h2ot3_window_setup_default_callbacks(h2ot3_window_t* window);
+
+
 #endif
