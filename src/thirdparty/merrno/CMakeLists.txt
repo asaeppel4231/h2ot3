@@ -1,4 +1,5 @@
 add_library(merrno STATIC
+    _internal_merrno.c
     merrno.c
 )
 
