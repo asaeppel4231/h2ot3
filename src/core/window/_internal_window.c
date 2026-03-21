@@ -8,6 +8,8 @@
 
 #include "dummy.h"
 
+#include "merrno.h"
+
 #include <time.h>
 
 #if H2OT3_SUPPORT_XCB == 1 
@@ -41,6 +43,7 @@ struct h2ot3_container{
 
 struct h2ot3_window {
     char* title;
+    int merrno_token;
     uint width_px;
     uint height_px;
     uint visible:1;
@@ -50,11 +53,12 @@ struct h2ot3_window {
 
 void _internal_h2ot3_window_init(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_init");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_init")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
     printf("\n");
     #endif
     memset(window, 0, _internal_h2ot3_window_get_struct_size());
+    window->merrno_token = get_merrno_token();
     callback_funcs_t* tmp = malloc(callbacks_get_struct_size());
     if(tmp == NULL){
         return;
@@ -68,12 +72,13 @@ void _internal_h2ot3_window_init(h2ot3_window_t* window){
 void _internal_h2ot3_window_free(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_free")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
     printf("\n");
     #endif
     callbacks_call_destroy_func(window->funcs, window);
-    _internal_safe_free((void**)&window->funcs);
+    _internal_safe_free((void**)_internal_h2ot3_window_get_funcs_ptr(window));
     _internal_safe_free((void**)_internal_h2ot3_window_get_title_ptr(window));
+    remove_merrno_token(window->merrno_token);
     return;
 }
 
@@ -83,7 +88,7 @@ void _internal_h2ot3_window_free(h2ot3_window_t* window){
 size_t _internal_h2ot3_window_get_struct_size(){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_struct_size")
-    LOG_RETURN("size_t", TCV, "%zu\n", sizeof(h2ot3_window_t));
+    LOG_RETURN("size_t", TCV, "%zu\n", sizeof(h2ot3_window_t))
     printf("\n");
     #endif
     return sizeof(h2ot3_window_t);
@@ -92,10 +97,10 @@ size_t _internal_h2ot3_window_get_struct_size(){
 char* _internal_h2ot3_window_get_title    (h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_title")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("char*", TCA, "%p,\n", window->title);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("char*", TCA, "%p,\n", window->title)
     if(window->title != NULL){
-        LOG_DEBUG("and data %s\n", window->title);
+        LOG_DEBUG("and data %s\n", window->title)
     }
     printf("\n");
     #endif
@@ -105,22 +110,32 @@ char* _internal_h2ot3_window_get_title    (h2ot3_window_t* window){
 char** _internal_h2ot3_window_get_title_ptr(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_title_ptr")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("char**", TCA, "%p,\n", &window->title);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("char**", TCA, "%p,\n", &window->title)
     if(window->title != NULL){
-        LOG_DEBUG("data %s\n", window->title);
-        LOG_DEBUG("and in the original (type: char*) with address %p\n", window->title);
+        LOG_DEBUG("data %s\n", window->title)
+        LOG_DEBUG("and in the original (type: char*) with address %p\n", window->title)
     }
     printf("\n");
     #endif
     return &window->title;
 }
 
+int   _internal_h2ot3_window_get_merrno_token(h2ot3_window_t* window){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_get_merrno_token")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("int", TCV, "%d\n", window->merrno_token)
+    printf("\n");
+    #endif
+    return window->merrno_token;
+}
+
 uint  _internal_h2ot3_window_get_width_px (h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_width_px")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("uint", TCV, "%u\n", window->width_px);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("uint", TCV, "%u\n", window->width_px)
     printf("\n");
     #endif
     return window->width_px;
@@ -129,8 +144,8 @@ uint  _internal_h2ot3_window_get_width_px (h2ot3_window_t* window){
 uint  _internal_h2ot3_window_get_height_px(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_height_px")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("uint", TCV, "%u\n", window->height_px);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("uint", TCV, "%u\n", window->height_px)
     printf("\n");
     #endif
     return window->height_px;
@@ -139,8 +154,8 @@ uint  _internal_h2ot3_window_get_height_px(h2ot3_window_t* window){
 mbool _internal_h2ot3_window_get_visibility(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_visibility")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("mbool (aka unsigned char)", TCV, "%u\n", window->visible);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("mbool (aka unsigned char)", TCV, "%u\n", window->visible)
     printf("\n");
     #endif
     return window->visible;
@@ -149,8 +164,8 @@ mbool _internal_h2ot3_window_get_visibility(h2ot3_window_t* window){
 h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_container")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("h2ot3_container_t*", TCA, "%p\n", window->root_container);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("h2ot3_container_t*", TCA, "%p\n", window->root_container)
     printf("\n");
     #endif
     return window->root_container;
@@ -159,46 +174,67 @@ h2ot3_container_t* _internal_h2ot3_window_get_container(h2ot3_window_t* window){
 callback_funcs_t* _internal_h2ot3_window_get_funcs(h2ot3_window_t* window){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_get_funcs")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_RETURN("callback_funcs_t*", TCA, "%p\n", window->funcs);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("callback_funcs_t*", TCA, "%p\n", window->funcs)
     printf("\n");
     #endif
     return window->funcs;
 }
 
+callback_funcs_t** _internal_h2ot3_window_get_funcs_ptr(h2ot3_window_t* window){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_get_funcs_ptr")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_RETURN("callback_funcs_t**", TCA, "%p\n", &window->funcs)
+    LOG_DEBUG("casted (type: callback_funcs_t*) with address %p\n", window->funcs)
+    printf("\n");
+    #endif
+    return &window->funcs;  
+}
 /***********************************************
 ******************  SETTER *********************
 ************************************************/
 void  _internal_h2ot3_window_set_title   (h2ot3_window_t* window, char* title){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_title");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "char*", TCA, "%p\n", title);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_title")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "char*", TCA, "%p\n", title)
     LOG_DEBUG("and data %s\n", title);
     if(window->title != NULL){
-        LOG_DEBUG("extra information: window->title (type: char*) has currently address %p\n", window->title);
-        LOG_DEBUG("and data %s\n", window->title);
+        LOG_DEBUG("extra information: window->title (type: char*) has currently address %p\n", window->title)
+        LOG_DEBUG("and data %s\n", window->title)
     }
     printf("\n");
     #endif
     _internal_safe_free((void**)_internal_h2ot3_window_get_title_ptr(window));
     window->title = _internal_deep_copy(title, MAX_WINDOW_TITLE_LEN);
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_BACK("_internal_h2ot3_window_set_title");
+    LOG_FUNCTION_BACK("_internal_h2ot3_window_set_title")
     if(window->title != NULL){
-        LOG_DEBUG("extra information: window->title (type: char*) has now address %p\n", window->title);
-        LOG_DEBUG("and data %s\n", window->title);
+        LOG_DEBUG("extra information: window->title (type: char*) has now address %p\n", window->title)
+        LOG_DEBUG("and data %s\n", window->title)
     }
     printf("\n");
     #endif
 }
 
+void  _internal_h2ot3_window_set_merrno_token(h2ot3_window_t* window, int token){
+    #if INTERNAL_WINDOW_DEBUG == 1
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_merrno_token")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "int", TCV, "%d\n", token)
+    LOG_DEBUG("window has has currently merrno token %d", window->merrno_token)
+    printf("\n");
+    #endif
+    window->merrno_token = token;
+}
+
 void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_width_px");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "uint", TCV, "%u\n", width_px);
-    LOG_DEBUG("extra information: window->width_px (type: uint) has currently value %u\n", window->width_px);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_width_px")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "uint", TCV, "%u\n", width_px)
+    LOG_DEBUG("extra information: window->width_px (type: uint) has currently value %u\n", window->width_px)
     printf("\n");
     #endif
     window->width_px = width_px;
@@ -207,9 +243,9 @@ void  _internal_h2ot3_window_set_width_px (h2ot3_window_t* window, uint width_px
 void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_px){
     #if INTERNAL_WINDOW_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_h2ot3_window_set_height_px")
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "uint", TCV, "%u\n", height_px);
-    LOG_DEBUG("extra information: window->height (type: uint) has currently value %u\n", window->height_px);
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "uint", TCV, "%u\n", height_px)
+    LOG_DEBUG("extra information: window->height (type: uint) has currently value %u\n", window->height_px)
     printf("\n");
     #endif
     window->height_px = height_px;
@@ -217,10 +253,10 @@ void  _internal_h2ot3_window_set_height_px(h2ot3_window_t* window, uint height_p
 
 void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visible){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_visibility");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "mbool (aka unsigned char)", TCV, "%u\n", visible);
-    LOG_DEBUG("extra information: window->visible (type: mbool (aka unsigned char) ) has currently value %u\n", window->visible);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_visibility")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "mbool (aka unsigned char)", TCV, "%u\n", visible)
+    LOG_DEBUG("extra information: window->visible (type: mbool (aka unsigned char) ) has currently value %u\n", window->visible)
     printf("\n");
     #endif
     window->visible = visible;
@@ -228,11 +264,11 @@ void  _internal_h2ot3_window_set_visibility(h2ot3_window_t* window, mbool visibl
 
 void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_container_t* container){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_container");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "h2ot3_container_t*", TCA, "%p\n", container);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_container")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "h2ot3_container_t*", TCA, "%p\n", container)
     if(window->root_container != NULL){
-        LOG_DEBUG("extra information: window->container (type: h2ot3_container_t*) has currently address %p\n", window->root_container);
+        LOG_DEBUG("extra information: window->container (type: h2ot3_container_t*) has currently address %p\n", window->root_container)
     }
     printf("\n");
     #endif
@@ -241,11 +277,11 @@ void  _internal_h2ot3_window_set_container(h2ot3_window_t* window, h2ot3_contain
 
 void _internal_h2ot3_window_set_funcs(h2ot3_window_t* window, callback_funcs_t* funcs){
     #if INTERNAL_WINDOW_DEBUG == 1
-    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_funcs");
-    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window);
-    LOG_PARAMETER("2nd", "callback_funcs_t*", TCA, "%p\n", funcs);
+    LOG_FUNCTION_CALL("_internal_h2ot3_window_set_funcs")
+    LOG_PARAMETER("1st", "h2ot3_window_t*", TCA, "%p\n", window)
+    LOG_PARAMETER("2nd", "callback_funcs_t*", TCA, "%p\n", funcs)
     if(window->funcs != NULL){
-        LOG_DEBUG("extra information: window->funcs (type: callback_funcs_t*) has currently address %p\n", window->funcs);
+        LOG_DEBUG("extra information: window->funcs (type: callback_funcs_t*) has currently address %p\n", window->funcs)
     }
     printf("\n");
     #endif

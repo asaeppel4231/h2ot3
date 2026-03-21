@@ -14,6 +14,7 @@ target_link_libraries(h2ot3_engine PUBLIC
     merrno
     mbool
     xcb
+    backend_dummy
 )
 
 # 4. Engine-Header

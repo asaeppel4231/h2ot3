@@ -2,7 +2,7 @@
  * @file merrno.h
  * @brief My own errno - header.
  * @author asaeppel4231
- * @version 1.0.2
+ * @version 1.0.2 patch 2
  */
 #ifndef MERRNO_H
 #define MERRNO_H
@@ -11,21 +11,42 @@
 #include <stddef.h>
 #include <time.h>
 
-#define SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED(cond, ec) \
+#define SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED(cond, ec, token) \
     do { \
         if (!(cond)) { \
-            set_merrno(ec); \
+            set_merrno(ec, token); \
             return; \
         } \
     } while(0)
 
-#define SET_MERRNO_AND_RETURN_IF_COND_FAILED(cond, ec, retcode) \
+#define SET_MERRNO_AND_RETURN_IF_COND_FAILED(cond, ec, retcode, token) \
     do { \
         if (!(cond)) { \
-            set_merrno(ec); \
+            set_merrno(ec, token); \
             return (retcode); \
         } \
     } while(0)
+
+#define SET_MERRNO_AND_RETURN_VOID_IF_COND_FAILED_ONESHOT(cond, ec) \
+    do { \
+        if (!(cond)) { \
+            int tok = get_merrno_token(); \
+            set_merrno(ec, tok); \
+            remove_merrno_token(tok); \
+            return; \
+        } \
+    } while(0)
+
+#define SET_MERRNO_AND_RETURN_IF_COND_FAILED_ONESHOT(cond, ec, retcode) \
+    do { \
+        if (!(cond)) { \
+            int tok = get_merrno_token(); \
+            set_merrno(ec, tok); \
+            remove_merrno_token(tok); \
+            return (retcode); \
+        } \
+    } while(0)
+
     /**
  * @enum Merrno_Ec
  * @brief My own errno Error codes
@@ -44,8 +65,6 @@ typedef enum Merrno_Ec{
     MERRNO_EC_INV_6TH_ARG,
     MERRNO_EC_INV_7TH_ARG /*more not needed yet*/
 }merrno_ec_t;
-
-extern merrno_ec_t global_merrno;
 
 /**
  * @brief Sets the merrno variable

@@ -1,5 +1,7 @@
 #include "xcb.h"
+
 #include "container.h"
+
 #include "window.h"
 
 #include <stdlib.h>
