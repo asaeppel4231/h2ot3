@@ -1,15 +1,15 @@
-# 1. Thirdparty zuerst
+# 1. Thirdparty first
 add_subdirectory(thirdparty/merrno)
 add_subdirectory(thirdparty/mbool)
 
-# 2. Engine definieren
+# 2. Define the library
 if(H2OT3_BUILD_SHARED)
     add_library(h2ot3_engine SHARED)
 else()
     add_library(h2ot3_engine STATIC)
 endif()
 
-# 3. Engine gegen thirdparty libs linken
+# 3. link the engine with the thirdparty libraries
 target_link_libraries(h2ot3_engine PUBLIC
     merrno
     mbool
@@ -33,14 +33,11 @@ target_include_directories(h2ot3_engine PUBLIC
 # 5. Engine-Basisquellen
 target_sources(h2ot3_engine PRIVATE
     core/container/grid/grid.c
-    backends/dummy/dummy.c
-    backends/dummy/_internal_dummy.c
-    backends/xcb/xcb.c
-    backends/xcb/_internal_xcb.c
 )
 
 # 6. Jetzt erst die Unterordner einbinden
 add_subdirectory(core)
+add_subdirectory(backends)
 
 # 7. Testcode optional
 if(H2OT3_BUILD_TESTCODE)
