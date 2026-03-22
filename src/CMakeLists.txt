@@ -13,12 +13,12 @@ endif()
 target_link_libraries(h2ot3_engine PUBLIC
     merrno
     mbool
-    xcb
-    backend_dummy
+    backend_dummy # just for testing
+    backend_xcb
 )
 
-# 4. Engine-Header
-target_include_directories(h2ot3_engine PUBLIC
+# 4. Engine Header
+set(ENGINE_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/core
     ${CMAKE_CURRENT_SOURCE_DIR}/core/container
@@ -26,21 +26,26 @@ target_include_directories(h2ot3_engine PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/core/_internal
     ${CMAKE_CURRENT_SOURCE_DIR}/core/helpers
     ${CMAKE_CURRENT_SOURCE_DIR}/core/window
-    # bad
+    # actually a little bit bad
     ${CMAKE_CURRENT_SOURCE_DIR}/backends/xcb
     ${CMAKE_CURRENT_SOURCE_DIR}/backends/dummy
 )
 
-# 5. Engine-Basisquellen
+target_include_directories(h2ot3_engine PUBLIC
+    ${ENGINE_INCLUDE_DIRS}
+)
+
+
+# 5. additional engine sources
 target_sources(h2ot3_engine PRIVATE
     core/container/grid/grid.c
 )
 
-# 6. Jetzt erst die Unterordner einbinden
+# 6. include subdirectories
 add_subdirectory(core)
 add_subdirectory(backends)
 
-# 7. Testcode optional
+# 7. (optional) build testcode
 if(H2OT3_BUILD_TESTCODE)
     add_subdirectory(testcode)
 endif()
