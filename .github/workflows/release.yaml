@@ -1,6 +1,7 @@
 name: Build Release
 
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
@@ -27,22 +28,31 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -S . -B build \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DH2OT3_BUILD_SHARED=ON \
-          -DH2OT3_BUILD_TESTCODE=ON \
-          -DH2OT3_BACKEND_SUPPORT_DUMMY=ON \
-          -DH2OT3_BACKEND_SUPPORT_XCB=ON \
-          -DH2OT3_BACKEND_SUPPORT_XORG=OFF \
-          -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
-          -DH2OT3_BACKEND_SUPPORT_WIN32=OFF \
-          -DH2OT3_BACKEND_SUPPORT_WAYLAND=OFF \
-          -DH2OT3_BACKEND_DUMMY_MODE=auto \
-          -DH2OT3_BACKEND_XCB_MODE=auto \
-          -DH2OT3_BACKEND_XORG_MODE=auto \
-          -DH2OT3_BACKEND_COCOA_MODE=auto \
-          -DH2OT3_BACKEND_WIN32_MODE=auto \
-          -DH2OT3_BACKEND_WAYLAND_MODE=auto
+        if [ "${{ matrix.os }}" = "macos-latest" ]; then
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DH2OT3_BUILD_SHARED=ON \
+            -DH2OT3_BUILD_TESTCODE=ON \
+            -DH2OT3_BACKEND_SUPPORT_COCOA=ON \
+            -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
+            -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
+        elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DH2OT3_BUILD_SHARED=ON \
+            -DH2OT3_BUILD_TESTCODE=ON \
+            -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
+            -DH2OT3_BACKEND_SUPPORT_XCB=ON \
+            -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
+        else
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DH2OT3_BUILD_SHARED=ON \
+            -DH2OT3_BUILD_TESTCODE=ON \
+            -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
+            -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
+            -DH2OT3_BACKEND_SUPPORT_WIN32=ON
+        fi
 
     - name: Build
       run: cmake --build build --config Release
