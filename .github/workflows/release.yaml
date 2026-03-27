@@ -26,33 +26,38 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: brew install cmake
 
-    - name: Configure CMake
+    - name: Configure CMake (Linux)
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        if [ "${{ matrix.os }}" = "macos-latest" ]; then
-          cmake -S . -B build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DH2OT3_BUILD_SHARED=ON \
-            -DH2OT3_BUILD_TESTCODE=ON \
-            -DH2OT3_BACKEND_SUPPORT_COCOA=ON \
-            -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
-            -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
-        elif [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
-          cmake -S . -B build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DH2OT3_BUILD_SHARED=ON \
-            -DH2OT3_BUILD_TESTCODE=ON \
-            -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
-            -DH2OT3_BACKEND_SUPPORT_XCB=ON \
-            -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
-        else
-          cmake -S . -B build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DH2OT3_BUILD_SHARED=ON \
-            -DH2OT3_BUILD_TESTCODE=ON \
-            -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
-            -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
-            -DH2OT3_BACKEND_SUPPORT_WIN32=ON
-        fi
+        cmake -S . -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DH2OT3_BUILD_SHARED=ON \
+          -DH2OT3_BUILD_TESTCODE=ON \
+          -DH2OT3_BACKEND_SUPPORT_XCB=ON \
+          -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
+          -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
+
+    - name: Configure CMake (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        cmake -S . -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DH2OT3_BUILD_SHARED=ON \
+          -DH2OT3_BUILD_TESTCODE=ON \
+          -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
+          -DH2OT3_BACKEND_SUPPORT_COCOA=ON \
+          -DH2OT3_BACKEND_SUPPORT_WIN32=OFF
+
+    - name: Configure CMake (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cmake -S . -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DH2OT3_BUILD_SHARED=ON \
+          -DH2OT3_BUILD_TESTCODE=ON \
+          -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
+          -DH2OT3_BACKEND_SUPPORT_COCOA=OFF \
+          -DH2OT3_BACKEND_SUPPORT_WIN32=ON
 
     - name: Build
       run: cmake --build build --config Release
