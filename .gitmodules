@@ -1,3 +1,3 @@
-[submodule "src/thirdparty/yastack"]
-	path = src/thirdparty/yastack
-	url = https://github.com/asaeppel4231/yastack.git
+[submodule "src/thirdparty/yastk"]
+	path = src/thirdparty/yastk
+	url = https://github.com/asaeppel4231/yastk.git
