@@ -1,6 +1,7 @@
 # 1. Thirdparty first
 add_subdirectory(thirdparty/merrno)
 add_subdirectory(thirdparty/mbool)
+add_subdirectory(thirdparty/yastk)
 
 # 2. Define the library
 if(H2OT3_BUILD_SHARED)
@@ -13,6 +14,7 @@ endif()
 target_link_libraries(h2ot3_engine PUBLIC
     merrno
     mbool
+    yastk
   #  backend_dummy # just for testing
     backend_xcb
 )
