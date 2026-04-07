@@ -60,7 +60,9 @@ void           _internal_safe_free(void** pointer){
     #if INTERNAL_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_safe_free");
     LOG_PARAMETER("1st", "void**", TCA, "%p\n", pointer);
-    LOG_DEBUG("casted (type: void*) with address %p\n", *pointer);
+    if(pointer != NULL){
+       LOG_DEBUG("casted (type: void*) with address %p\n", *pointer);
+    }
     printf("\n");
     #endif
     if(pointer == NULL || *pointer == NULL){
