@@ -14,12 +14,15 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
     - name: Install dependencies (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -34,6 +37,8 @@ jobs:
       run: |
         cmake -S . -B build \
           -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_TESTING=OFF \
+          -DYASTK_BUILD_TESTS=OFF \
           -DH2OT3_BUILD_SHARED=ON \
           -DH2OT3_BUILD_TESTCODE=ON \
           -DH2OT3_BACKEND_SUPPORT_XCB=ON \
@@ -45,6 +50,8 @@ jobs:
       run: |
         cmake -S . -B build \
           -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_TESTING=OFF \
+          -DYASTK_BUILD_TESTS=OFF \
           -DH2OT3_BUILD_SHARED=ON \
           -DH2OT3_BUILD_TESTCODE=ON \
           -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
@@ -56,6 +63,8 @@ jobs:
       run: |
         cmake -S . -B build \
           -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_TESTING=OFF \
+          -DYASTK_BUILD_TESTS=OFF \
           -DH2OT3_BUILD_SHARED=ON \
           -DH2OT3_BUILD_TESTCODE=ON \
           -DH2OT3_BACKEND_SUPPORT_XCB=OFF \
