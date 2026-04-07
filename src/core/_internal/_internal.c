@@ -59,10 +59,8 @@ char*           _internal_deep_copy(char* string, size_t max_len){
 void           _internal_safe_free(void** pointer){
     #if INTERNAL_DEBUG == 1
     LOG_FUNCTION_CALL("_internal_safe_free");
-    if(pointer != NULL || *pointer != NULL){
-        LOG_PARAMETER("1st", "void**", TCA, "%p\n", pointer);
-        LOG_DEBUG("casted (type: void*) with address %p\n", *pointer);
-    }
+    LOG_PARAMETER("1st", "void**", TCA, "%p\n", pointer);
+    LOG_DEBUG("casted (type: void*) with address %p\n", *pointer);
     printf("\n");
     #endif
     if(pointer == NULL || *pointer == NULL){
