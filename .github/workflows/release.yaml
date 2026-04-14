@@ -74,21 +74,6 @@ jobs:
     - name: Build
       run: cmake --build build --config Release
 
-    - name: Compress artifacts (Linux/macOS)
-      if: matrix.os != 'windows-latest'
-      run: |
-        LIBFILE=$(find build -maxdepth 3 -type f \( -name "*.so" -o -name "*.dylib" \))
-        echo "Found library: $LIBFILE"
-        xz -9 $LIBFILE
-        mv ${LIBFILE}.xz h2ot3-${{ matrix.os }}.xz
-
-    - name: Compress artifacts (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-        $lib = Get-ChildItem -Recurse -Filter *.dll | Select-Object -First 1
-        Write-Host "Found library: $($lib.FullName)"
-        tar -cJf h2ot3-${{ matrix.os }}.tar.xz $($lib.FullName)
-
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
