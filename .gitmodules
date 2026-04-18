@@ -1,3 +1,6 @@
 [submodule "src/thirdparty/yastk"]
 	path = src/thirdparty/yastk
 	url = https://github.com/asaeppel4231/yastk.git
+[submodule "src/thirdparty/yabool"]
+	path = src/thirdparty/yabool
+	url = git@github.com:asaeppel4231/yabool.git
